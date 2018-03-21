@@ -2,6 +2,7 @@
 
 function upgrade {
     apt-get update
+    apt-get -y install awscli make 
     apt-get -y upgrade
 }
 
