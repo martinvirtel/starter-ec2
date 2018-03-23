@@ -3,7 +3,11 @@
 
 ## Please edit variables.rf
 
-... for the characteritics of the server to be launched. And `config.makefile` for your aws credentials
+... for the characteritics of the server to be launched. 
+
+## Please edit config.makefile
+
+... and add apointer to your aws credentials. Use `config.makefile-example` as a starting point.
 
 Then run
 
