@@ -10,7 +10,9 @@ Then run
 
 and 
 
-`bin/initialize.sh` on the remote server
+`bin/initialize.sh` on the remote server. You will get Ubuntu 16.04 with docker, make and awscli
+
+
 
 
 
