@@ -1,14 +1,22 @@
 
 SHELL := /bin/bash
 
-SSH := $(shell terraform output ssh)
-HOST := $(shell terraform output host)
+
+include config.makefile config_terraform.makefile
+
+
+terraform.tfstate: ubuntu-ec2-server.tf
+	$(AWS_CREDENTIALS) terraform refresh
+
+config_terraform.makefile: terraform.tfstate
+	terraform output makefile >$@
+
 
 PROJECT     ?= server
 HOMEDIR     := /home/ubuntu
 
-remote:
-	expect -c 'spawn $(SSH) -A $(HOST); send "cd $(HOMEDIR);  tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '	
+# remote:
+#	expect -c 'spawn $(SSH) -A $(HOST); send "cd $(HOMEDIR);  tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '	
 
 
 REMOTE:=echo Hello World
@@ -17,9 +25,34 @@ exec:
 	$(SSH) $(HOST) $(REMOTE)
 
 
+terraform:
+	AWS_PROFILE=$(AWS_PROFILE) AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) aws ec2 
 
 get-bin-scripts:
 	rsync -av -e "$(SSH)" $(HOST):/home/ubuntu/bin ./
 
 put-bin-scripts:
 	rsync -av -e "$(SSH)" ./bin/ $(HOST):/home/ubuntu/bin/
+
+
+
+plan:
+	$(AWS_CREDENTIALS) terraform plan
+
+apply:
+	$(AWS_CREDENTIALS) terraform apply
+
+remote: 
+	expect -c 'spawn $(SSH) -a $(HOST); send "mkdir -p $(HOMEDIR); cd $(HOMEDIR); tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; sleep 1.5; send  "eval \$$(tmux show-env -g |grep '^SSH_A')\r"; interact '
+
+
+start-instance:
+	$(AWS_CREDENTIALS) aws ec2 start-instances --instance-ids=$(INSTANCE)
+
+stop-instance:
+	$(AWS_CREDENTIALS) aws ec2 stop-instances --instance-ids=$(INSTANCE)
+
+query-instance:
+	@printf "$(INSTANCE) state: " ;\
+	$(AWS_CREDENTIALS) aws ec2 describe-instances --instance-ids=$(INSTANCE) --query=Reservations[].Instances[].State.Name --output=text
+
