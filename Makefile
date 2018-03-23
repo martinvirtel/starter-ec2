@@ -8,7 +8,7 @@ PROJECT     ?= server
 HOMEDIR     := /home/ubuntu
 
 remote:
-	expect -c 'spawn $(SSH) $(HOST); send "cd $(HOMEDIR);  tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '	
+	expect -c 'spawn $(SSH) -A $(HOST); send "cd $(HOMEDIR);  tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '	
 
 
 REMOTE:=echo Hello World
