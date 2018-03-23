@@ -20,6 +20,7 @@ function docker_install {
  apt-get update
  apt-get -y install docker-ce
  service docker start
+ systemctl enable docker
  groupadd docker
  docker run hello-world
 }
