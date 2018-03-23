@@ -43,7 +43,7 @@ resource "aws_instance" "server" {
 
 
   tags {
-    Name = "${var.name}"
+    Name = "${var.name} ${var.slug}"
     Repository = ""
   }
 
