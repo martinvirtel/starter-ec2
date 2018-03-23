@@ -9,7 +9,7 @@ terraform.tfstate: ubuntu-ec2-server.tf
 	-$(AWS_CREDENTIALS) terraform refresh
 
 config_terraform.makefile: terraform.tfstate
-	terraform output makefile >$@
+	-terraform output makefile >$@
 
 
 PROJECT     ?= server
