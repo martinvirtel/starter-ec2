@@ -6,7 +6,7 @@ include config.makefile config_terraform.makefile
 
 
 terraform.tfstate: ubuntu-ec2-server.tf
-	$(AWS_CREDENTIALS) terraform refresh
+	-$(AWS_CREDENTIALS) terraform refresh
 
 config_terraform.makefile: terraform.tfstate
 	terraform output makefile >$@
@@ -25,8 +25,15 @@ exec:
 	$(SSH) $(HOST) $(REMOTE)
 
 
+TF := show
 terraform:
-	AWS_PROFILE=$(AWS_PROFILE) AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) aws ec2 
+	@echo terraform TF=$(TF) ;\
+	$(AWS_CREDENTIALS) terraform $(TF)
+
+AWS := hello
+aws:
+	echo aws AWS=$(AWS) ;\
+	$(AWS_CREDENTIALS) aws $(AWS)
 
 get-bin-scripts:
 	rsync -av -e "$(SSH)" $(HOST):/home/ubuntu/bin ./
@@ -37,10 +44,10 @@ put-bin-scripts:
 
 
 plan:
-	$(AWS_CREDENTIALS) terraform plan
+	$(make) terraform TF=plan
 
 apply:
-	$(AWS_CREDENTIALS) terraform apply
+	$(make) terraform TF=apply
 
 remote: 
 	expect -c 'spawn $(SSH) -a $(HOST); send "mkdir -p $(HOMEDIR); cd $(HOMEDIR); tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; sleep 1.5; send  "eval \$$(tmux show-env -g |grep '^SSH_A')\r"; interact '

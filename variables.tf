@@ -1,4 +1,15 @@
 
+# Name of the server
+
+variable name {
+  default  = "Reserve-Server Versicherungsmonitor.de",
+}           
+
+variable slug {
+   default =  "vm-server"
+}
+
+
 # Secret Key File
 
 variable sshkey {
@@ -9,7 +20,7 @@ variable sshkey {
 # Volume size in GB
 
 variable volume_size {
- default = 128
+ default = 64 
 }
 
 

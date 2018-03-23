@@ -22,7 +22,7 @@ resource "aws_instance" "server" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "${var.instance_type}"
 
-  disable_api_termination = true
+  disable_api_termination = false
   monitoring = true 
   associate_public_ip_address = true 
 
@@ -43,7 +43,7 @@ resource "aws_instance" "server" {
 
 
   tags {
-    Name = "MPER Archive"
+    Name = "${var.name}"
     Repository = ""
   }
 
@@ -60,7 +60,7 @@ resource "aws_instance" "server" {
 
 # Key
 resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
+  key_name   = "deployer-key-${var.slug}"
   public_key = "${file("${var.sshkey}.pub")}"
 }
 
@@ -74,7 +74,7 @@ resource "aws_default_vpc" "default" {
 # Security Group
 
 resource "aws_security_group" "web_ssh" {
-  name        = "web_ssh"
+  name        = "web_ssh_${var.slug}"
   description = "Allow ports 22, 80, 443"
   vpc_id      = "${aws_default_vpc.default.id}"
 
