@@ -3,6 +3,8 @@
 
 ## Please edit variables.rf
 
+... for the characteritics of the server to be launched. And `config.makefile` for your aws credentials
+
 Then run
 
 `terraform apply`
