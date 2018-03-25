@@ -24,7 +24,8 @@ function docker_install {
  groupadd docker
  docker run hello-world
  # On AWS: Init Swarm with internal IP Address
- docker swarm init --advertise-addr $(uname -a | grep aws >/dev/null && curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+ docker swarm init --advertise-addr 127.0.0.1
+ # $(uname -a | grep aws >/dev/null && curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 }
 
 function locale {
