@@ -33,8 +33,30 @@ function locale {
 	update-locale
 }
 
+function ssh-agent-service {
+	# https://stackoverflow.com/a/38980986/2743441
+	mkdir -p ~/.config/systemd/user/
+	if [ ! -f ~/.config/systemd/user/ssh-agent.service ] ; then
+	cat <<__here__ > ~/.config/systemd/user/ssh-agent.service
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=forking
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+ExecStart=/usr/bin/ssh-agent -a $SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target
+__here__
+	fi
+	
+
+}
+
+
 if [[ $EUID -eq 0 ]]; then
-    update
+    	upgrade
 	locale
 	docker_install
 	dpkg-reconfigure --priority=low unattended-upgrades
@@ -42,5 +64,8 @@ if [[ $EUID -eq 0 ]]; then
 else 
 	sudo $0 
  	sudo usermod -aG docker $USER
+	ssh-agent-service
+  	systemctl --user enable ssh-agent
+  	systemctl --user start ssh-agent
 fi
 
