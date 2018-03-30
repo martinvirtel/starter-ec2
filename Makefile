@@ -4,8 +4,10 @@ SHELL := /bin/bash
 
 include config.makefile config_terraform.makefile
 
+.terraform:
+	$(MAKE) terraform init
 
-terraform.tfstate: ubuntu-ec2-server.tf
+terraform.tfstate: ubuntu-ec2-server.tf 
 	-$(AWS_CREDENTIALS) terraform refresh
 
 config_terraform.makefile: terraform.tfstate
@@ -44,10 +46,10 @@ put-bin-scripts:
 
 
 plan:
-	$(make) terraform TF=plan
+	$(MAKE) terraform TF=plan
 
 apply:
-	$(make) terraform TF=apply
+	$(MAKE) terraform TF=apply
 
 remote: 
 	expect -c 'spawn $(SSH) -a $(HOST); send "mkdir -p $(HOMEDIR); cd $(HOMEDIR); tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; sleep 1.5; send  "eval \$$(tmux show-env -g |grep '^SSH_A')\r"; interact '
