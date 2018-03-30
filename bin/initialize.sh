@@ -2,7 +2,7 @@
 
 function upgrade {
     apt-get update
-    apt-get -y install awscli make 
+    apt-get -y install awscli make git
     apt-get -y upgrade
 }
 
@@ -56,7 +56,7 @@ __here__
 
 
 if [[ $EUID -eq 0 ]]; then
-    	upgrade
+    upgrade
 	locale
 	docker_install
 	dpkg-reconfigure --priority=low unattended-upgrades
@@ -67,5 +67,6 @@ else
 	ssh-agent-service
   	systemctl --user enable ssh-agent
   	systemctl --user start ssh-agent
+    git config --global user.email "martin.virtel@gmail.com"
 fi
 
