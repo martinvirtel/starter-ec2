@@ -7,7 +7,7 @@ include config.makefile config_terraform.makefile
 .terraform:
 	$(MAKE) terraform init
 
-terraform.tfstate: ubuntu-ec2-server.tf .terraform
+terraform.tfstate: ubuntu-ec2-server.tf 
 	-$(AWS_CREDENTIALS) terraform refresh
 
 config_terraform.makefile: terraform.tfstate
@@ -15,7 +15,7 @@ config_terraform.makefile: terraform.tfstate
 
 
 PROJECT     ?= server
-HOMEDIR     := /home/ubuntu
+HOMEDIR     ?= /home/ubuntu
 
 # remote:
 #	expect -c 'spawn $(SSH) -A $(HOST); send "cd $(HOMEDIR);  tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '	
