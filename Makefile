@@ -44,7 +44,7 @@ put-bin-scripts:
 	rsync -av -e "$(SSH)" ./bin/ $(HOST):/home/ubuntu/bin/
 
 put-vim-config:
-	rsync -av -e "$(SSH)" ~/.vimrc $(HOST):/home/ubuntu/.vimrc && \
+	rsync -av -e "$(SSH)" ~/$$(readlink ~/.vimrc) $(HOST):/home/ubuntu/.vimrc && \
 	rsync -av -e "$(SSH)" ~/.vim/ $(HOST):/home/ubuntu/.vim/
 
 
