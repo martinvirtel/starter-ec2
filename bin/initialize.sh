@@ -2,8 +2,15 @@
 
 function upgrade {
     apt-get update
-    apt-get -y install awscli make git
+    apt-get -y install awscli make git python3-pip
     apt-get -y upgrade
+}
+
+function python_install {
+
+   sudo pip3 install --upgrade pip
+   sudo pip3 install fabric
+
 }
 
 function docker_install {
@@ -60,7 +67,7 @@ if [[ $EUID -eq 0 ]]; then
 	locale
 	docker_install
 	dpkg-reconfigure --priority=low unattended-upgrades
-
+    python_install
 else 
 	sudo $0 
  	sudo usermod -aG docker $USER
