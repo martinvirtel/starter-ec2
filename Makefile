@@ -48,6 +48,11 @@ put-vim-config:
 	rsync -av -e "$(SSH)" ~/.vim/ $(HOST):/home/ubuntu/.vim/
 
 
+put-ssh-config:
+	rsync -av -e "$(SSH)" ~/.ssh/deploy.d/ $(HOST):/home/ubuntu/.ssh/deploy.d &&\
+	printf "Please insert\n\nInclude deploy.d/*.conf\n\ninto your ~/.ssh/config"
+
+
 plan:
 	$(MAKE) terraform TF=plan
 
