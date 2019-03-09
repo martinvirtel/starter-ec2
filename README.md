@@ -12,7 +12,7 @@
 Then run
 
 `terraform apply`
-`make put-bin-scripts remote`
+`make put-bin-scripts put-vim-config put-ssh-config remote`
 
 and 
 

@@ -2,25 +2,25 @@
 # Name of the server
 
 variable name {
-  default  = "Reserve-Server Versicherungsmonitor.de",
+  default  = "readerboard_2019",
 }           
 
 variable slug {
-   default =  "vm-server"
+   default =  "rb2019"
 }
 
 
 # Secret Key File
 
 variable sshkey {
-  default = "~/.ssh/id_martinvirtel_server_2017"
+  default = "~/.ssh/id_martinvirtel_server_2018"
 }
 
 
 # Volume size in GB
 
 variable volume_size {
- default = 64 
+ default = 32 
 }
 
 
@@ -30,3 +30,4 @@ variable volume_size {
 variable instance_type {
  default = "t2.medium"
 }
+
