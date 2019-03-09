@@ -37,6 +37,26 @@ function ssh_upgrade {
    sudo dpkg -i libkrb5-3_1.14.3+dfsg-2ubuntu1_amd64.deb
    sudo dpkg -i libgssapi-krb5-2_1.14.3+dfsg-2ubuntu1_amd64.deb
    sudo dpkg -i openssh-client_7.5p1-10_amd64.deb
+
+   cd -
+}
+
+
+function tmux_ssh_agent {
+
+# https://werat.github.io/2017/02/04/tmux-ssh-agent-forwarding.html
+
+cat <<__here__ >~/.ssh/rc
+if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
+    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+fi
+__here__
+
+cat <<__here__ >~/.tmux.conf
+set-environment -g 'ssh_auth_sock' ~/.ssh/ssh_auth_sock
+__here__
+
+
 }
 
 
@@ -104,5 +124,6 @@ else
   	systemctl --user enable ssh-agent
   	systemctl --user start ssh-agent
     git config --global user.email "martin.virtel@gmail.com"
+    tmux_ssh_agent
 fi
 
