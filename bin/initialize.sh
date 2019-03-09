@@ -10,7 +10,7 @@ function python_install {
 
    sudo add-apt-repository -y ppa:deadsnakes/ppa
    sudo apt-get update
-   sudo apt-get -y install python3.6
+   sudo apt-get -y install python3.6 python3.6-dev
    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
