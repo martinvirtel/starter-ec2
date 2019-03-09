@@ -19,6 +19,28 @@ function python_install {
    sudo pip3 install fabric pipenv
 }
 
+
+function ssh_upgrade {
+
+   TEMPDIR=/tmp/$$
+
+   mkdir -p $TEMPDIR
+   cd $TEMPDIR
+
+   # https://gist.github.com/stefansundin/0fd6e9de172041817d0b8a75f1ede677
+
+   wget https://launchpadlibrarian.net/335526589/openssh-client_7.5p1-10_amd64.deb
+   wget https://launchpadlibrarian.net/298453050/libgssapi-krb5-2_1.14.3+dfsg-2ubuntu1_amd64.deb
+   wget https://launchpadlibrarian.net/298453058/libkrb5-3_1.14.3+dfsg-2ubuntu1_amd64.deb
+   wget https://launchpadlibrarian.net/298453060/libkrb5support0_1.14.3+dfsg-2ubuntu1_amd64.deb
+   sudo dpkg -i libkrb5support0_1.14.3+dfsg-2ubuntu1_amd64.deb
+   sudo dpkg -i libkrb5-3_1.14.3+dfsg-2ubuntu1_amd64.deb
+   sudo dpkg -i libgssapi-krb5-2_1.14.3+dfsg-2ubuntu1_amd64.deb
+   sudo dpkg -i openssh-client_7.5p1-10_amd64.deb
+}
+
+
+
 function docker_install {
  apt-get -y install \
          apt-transport-https\
@@ -74,6 +96,7 @@ if [[ $EUID -eq 0 ]]; then
 	docker_install
 	dpkg-reconfigure --priority=low unattended-upgrades
     python_install
+    ssh_upgrade
 else 
 	sudo $0 
  	sudo usermod -aG docker $USER
