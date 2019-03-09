@@ -55,7 +55,7 @@ apply:
 	$(MAKE) terraform TF=apply
 
 remote: 
-	expect -c 'spawn $(SSH) $(HOST); send "mkdir -p $(HOMEDIR); cd $(HOMEDIR); tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; sleep 1.5; send  "eval \$$(tmux show-env -g |grep '^SSH_A')\r"; interact '
+	expect -c 'spawn $(SSH) $(HOST); send "mkdir -p $(HOMEDIR); cd $(HOMEDIR); tmux new-session -s $(PROJECT) || tmux attach -t $(PROJECT)\r"; interact '
 
 
 start-instance:
